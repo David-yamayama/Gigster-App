@@ -170,15 +170,17 @@ export default function Login(props, navigate) {
                 >
                   <Text style={styles.text_signin}>Log in</Text>
                 </TouchableOpacity>
-                <View style={styles.bottom}>
-                  <Text style={styles.bottom_text}>Pas encore inscrit ?</Text>
+                <Text style={styles.bottom_text}>
+                  Pas encore inscrit ?
                   <Text
                     onPress={() => setIsSignIn(true)}
                     style={styles.bottom_signup}
                   >
                     Sign Up
                   </Text>
-                </View>
+                </Text>
+
+                <View style={styles.bottom}></View>
               </View>
             )}
           </Formik>
@@ -270,7 +272,7 @@ export default function Login(props, navigate) {
           </Formik>
         )}
       </ScrollView>
-    </KeyboardAvoidingView >
+    </KeyboardAvoidingView>
   );
 }
 
@@ -280,7 +282,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#F3F4EB",
     width: "100%",
     paddingTop: 36,
-
   },
   scrollViewContainer: {
     flexGrow: 1,
@@ -314,6 +315,7 @@ const styles = StyleSheet.create({
     fontSize: 70,
     marginBottom: "20%",
     color: "#black",
+    textAlign: "center",
   },
   titles: {
     fontWeight: "bold",
@@ -420,6 +422,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 1,
     shadowRadius: 0,
   },
+
   input_signup_button: {
     height: 60,
     width: "35%",
@@ -445,10 +448,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   bottom_text: {
-    marginRight: "20%",
-    width: "40%",
+    width: "60%",
     fontWeight: "bold",
     fontSize: 15,
+
+    textAlign: "center",
   },
   bottom_btn: {
     backgroundColor: "#ec2761",
@@ -480,9 +484,7 @@ const styles = StyleSheet.create({
     opacity: 1,
   },
   logo: {
-    width: '42%',
-    height: '20%',
-
-
-  }
+    width: "42%",
+    height: "20%",
+  },
 });
