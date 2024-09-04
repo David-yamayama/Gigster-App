@@ -11,26 +11,11 @@ import {
   ScrollView,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  updateId,
-  updateEmail,
-  updateUsername,
-  updateToken,
-  updateArtist,
-  updateHost,
-  updateBirthdate,
-  updateFirstname,
-  updateLastname,
-  updateAddress,
-  updatePhoneNumber,
-  getArtistInfos,
-  getHostInfos,
-} from "../reducers/user";
+import { updateUser, updateUserAtLog } from "../reducers/user";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { FRONT_IP } from "../hide-ip";
 import { useNavigation } from "@react-navigation/native";
-import moment from "moment";
 
 // Définir les schémas de validation avec Yup
 
@@ -63,7 +48,7 @@ export default function Login(props, navigate) {
   const [isSignIn, setIsSignIn] = useState(false);
 
   const handleSubmitSignIn = (values, { setSubmitting, setErrors }) => {
-    fetch(`https://gigsterbackend.vercel.app/users/signin`, {
+    fetch(`https://gigster-app-backend.vercel.app/users/signin`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -79,21 +64,7 @@ export default function Login(props, navigate) {
           setErrors({ general: data.error });
         } else {
           delete data.data.artist._id;
-          dispatch(updateId(data.data._id));
-          dispatch(updateToken(data.data.token));
-          dispatch(updateUsername(data.data.username));
-          dispatch(updateEmail(data.email));
-          dispatch(updateFirstname(data.data.firstname));
-          dispatch(updateLastname(data.data.lastname));
-          dispatch(updateAddress(data.data.address));
-          dispatch(updatePhoneNumber(data.data.phoneNumber));
-          dispatch(getArtistInfos(data.data.artist));
-          dispatch(getHostInfos(data.data.host));
-          dispatch(
-            updateBirthdate(moment(data.data.birthdate).format("DD/MM/YYYY"))
-          );
-          dispatch(updateArtist(data.data.isArtist));
-          dispatch(updateHost(data.data.isHost));
+          dispatch(updateUserAtLog(data.data));
           console.log(data);
 
           navigation.navigate("TabNavigator", { screen: "Home" });
@@ -141,6 +112,7 @@ export default function Login(props, navigate) {
                 <Text style={styles.signin}>Welcome back</Text>
                 <TextInput
                   placeholder="Email..."
+                  placeholderTextColor="black"
                   style={styles.input}
                   onChangeText={handleChange("email")}
                   onBlur={handleBlur("email")}
@@ -152,6 +124,7 @@ export default function Login(props, navigate) {
                 <TextInput
                   secureTextEntry
                   placeholder="Password..."
+                  placeholderTextColor="black"
                   style={styles.input}
                   onChangeText={handleChange("password")}
                   onBlur={handleBlur("password")}
@@ -339,6 +312,7 @@ const styles = StyleSheet.create({
     borderRadius: 13,
     borderWidth: 2,
     marginTop: 20,
+    color: "black",
     backgroundColor: "white",
     padding: 10,
     // Pour Android

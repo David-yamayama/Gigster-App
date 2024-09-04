@@ -5,19 +5,8 @@ import React, { useState } from "react";
 import { FRONT_IP } from "../hide-ip";
 import StatusScreen from "./StatusScreen";
 import {
-  updateToken,
-  updateId,
-  updateUsername,
-  updateEmail,
-  updateFirstname,
-  updateLastname,
-  updateAddress,
-  updatePhoneNumber,
-  getArtistInfos,
-  getHostInfos,
-  updateBirthdate,
-  updateArtist,
-  updateHost,
+
+  updateUserAtLog,
 } from "../reducers/user";
 import { useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
@@ -91,11 +80,12 @@ export default function LoginScreen({ navigation }) {
     sendData();
   }
 
-  console.log("Utilisateur Final:", user);
+
   async function sendData() {
     console.log("Envoi des données vers le backend");
     console.log("Utilisateur Final:", user);
-    const resp = await fetch(`https://gigsterbackend.vercel.app/users/signup`, {
+    const resp = await fetch(`https://gigster-app-backend.vercel.app
+/users/signup`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(user),
@@ -114,19 +104,7 @@ export default function LoginScreen({ navigation }) {
       data.error
     );
     if (data.result) {
-      dispatch(updateId(data.data._id));
-      dispatch(updateToken(data.token));
-      dispatch(updateUsername(user.username));
-      dispatch(updateEmail(user.email));
-      dispatch(updateFirstname(user.firstname));
-      dispatch(updateLastname(user.lastname));
-      dispatch(updateAddress(user.address));
-      dispatch(updatePhoneNumber(user.phoneNumber));
-      dispatch(getArtistInfos(user.artist));
-      dispatch(getHostInfos(user.host));
-      dispatch(updateBirthdate(moment(user.birthdate).format("DD/MM/YYYY")));
-      dispatch(updateArtist(user.isArtist));
-      dispatch(updateHost(user.isHost));
+      dispatch(updateUserAtLog(data.data))
       navigation.navigate("TabNavigator", { screen: "Home" });
     }
   }

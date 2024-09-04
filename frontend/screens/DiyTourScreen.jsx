@@ -54,7 +54,8 @@ export default function DiyTourScreen() {
 
   // Affichge de tout les Markers de la map à l'initialisation de la map
   useEffect(() => {
-    fetch(`https://gigsterbackend.vercel.app/allAnnounces`)
+    fetch(`https://gigster-app-backend.vercel.app
+/allAnnounces`)
       .then((response) => response.json())
       .then((data) => {
         for (let elem of data.announces) {

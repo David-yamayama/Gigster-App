@@ -404,6 +404,7 @@ export default function HomeScreen() {
                 ? "Find your future hosts"
                 : "Find your future artists"
             }
+            placeholderTextColor="black"
             style={styles.input}
           ></TextInput>
           <TouchableOpacity
@@ -492,6 +493,7 @@ const styles = StyleSheet.create({
     width: "70%",
   },
   btnSearch: {
+    height: "80%",
     backgroundColor: "#5100FF",
     paddingTop: 6,
     paddingBottom: 6,
@@ -509,6 +511,9 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.3,
     shadowRadius: 2,
+    display:"flex",
+    alignItems:"center",
+    justifyContent:"center",
   },
   textSearch: {
     color: "white",
@@ -633,6 +638,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     borderRadius: 107,
+    paddingLeft: 30,
   },
   lastModalSection: {
     flexDirection: "row",
@@ -644,6 +650,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     borderRadius: 107,
     borderColor: "red",
+    backgroundColor: "red",
+    paddingLeft: 30,
   },
   iconModal: {
     width: "15%",
@@ -652,7 +660,7 @@ const styles = StyleSheet.create({
   iconLastModal: {
     width: "15%",
     textAlign: "center",
-    color: "red",
+    color: "white",
   },
   modalText: {
     fontSize: 17,
@@ -663,7 +671,7 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontWeight: "bold",
     marginLeft: 10,
-    color: "red",
+    color: "white",
   },
   modalAlign: {
     width: "80%",

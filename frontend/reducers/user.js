@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import moment from "moment";
 
 const initialState = {
   value: {
@@ -28,7 +29,7 @@ const initialState = {
     isHost: false,
     medias: [],
     token: null,
-    likedHosts: []
+    likedHosts: [],
   },
 };
 
@@ -36,56 +37,39 @@ export const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    updateId: (state, action) => {
-      state.value._id = action.payload;
+    updateUser: (state, action) => {
+      const { key, value } = action.payload;
+      if (key === "birthdate") {
+        state.value[key] = moment(value).format("DD/MM/YYYY");
+      } else {
+        state.value[key] = value;
+      }
     },
-    updateUsername: (state, action) => {
-      state.value.username = action.payload;
+
+    updateUserAtLog: (state, action) => {
+      const newData = action.payload;
+
+      if (newData.birthdate) {
+        newData.birthdate = moment(newData.birthdate).format("DD/MM/YYYY");
+      }
+
+      state.value = { ...state.value, ...newData };
     },
-    updateEmail: (state, action) => {
-      state.value.email = action.payload;
-    },
-    updateFirstname: (state, action) => {
-      state.value.firstname = action.payload;
-    },
-    updateLastname: (state, action) => {
-      state.value.lastname = action.payload;
-    },
-    updateAddress: (state, action) => {
-      state.value.address = action.payload;
-    },
-    updatePhoneNumber: (state, action) => {
-      state.value.phoneNumber = action.payload;
-    },
-    getArtistInfos: (state, action) => {
-      state.value.artist = { ...state.value.artist, ...action.payload };
-    },
-    getHostInfos: (state, action) => {
-      state.value.host = action.payload;
-    },
-    updateBirthdate: (state, action) => {
-      state.value.birthdate = action.payload;
-    },
-    updateToken: (state, action) => {
-      state.value.token = action.payload;
-    },
-    updateArtist: (state, action) => {
-      state.value.isArtist = action.payload;
-    },
-    updateHost: (state, action) => {
-      state.value.isHost = action.payload;
-    },
+
     addMedia: (state, action) => {
       state.value.medias.push(action.payload);
     },
+
     removeMedia: (state, action) => {
       state.value.medias = state.value.medias.filter(
         (e) => e !== action.payload
       );
     },
+
     addLikedHost: (state, action) => {
       state.value.likedHosts.push(action.payload);
     },
+
     removeLikedHosts: (state, action) => {
       state.value.likedHosts = state.value.likedHosts.filter(
         (e) => e.title !== action.payload.title
@@ -95,22 +79,11 @@ export const userSlice = createSlice({
 });
 
 export const {
-  updateId,
-  updateUsername,
-  updateEmail,
-  updateFirstname,
-  updateLastname,
-  updateBirthdate,
-  updateAddress,
-  updateToken,
-  updateArtist,
-  updateHost,
-  updatePhoneNumber,
+  updateUser,
+  updateUserAtLog,
   addMedia,
   removeMedia,
-  getArtistInfos,
-  getHostInfos,
   addLikedHost,
-  removeLikedHosts
+  removeLikedHosts,
 } = userSlice.actions;
 export default userSlice.reducer;

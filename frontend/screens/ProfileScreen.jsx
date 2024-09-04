@@ -65,7 +65,7 @@ export default function ProfileScreen() {
     <View style={styles.container}>
       <View style={styles.profileContainer}>
         <View style={styles.profileCard}>
-          <ImageBackground source={profilePic}>
+          <ImageBackground source={profilePic} style={styles.profilePic}>
             <LinearGradient
               colors={["transparent", "rgba(255,255,255,1)"]}
               style={styles.background}
@@ -169,6 +169,16 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     backgroundColor: "white",
     overflow: "hidden",
+  },
+
+  profilePic:{
+width:"100%",
+height:"100%",
+resizeMode:"cover",
+borderRadius: 20,
+overflow:"hidden"
+
+
   },
   background: {
     position: "absolute",
