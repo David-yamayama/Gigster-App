@@ -104,6 +104,7 @@ export default function LoginScreen({ navigation }) {
       data.error
     );
     if (data.result) {
+      delete data.data.artist._id;
       dispatch(updateUserAtLog(data.data))
       navigation.navigate("TabNavigator", { screen: "Home" });
     }

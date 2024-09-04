@@ -38,6 +38,7 @@ router.post("/signup", (req, res) => {
       console.log("BODY", req.body);
       const hash = bcrypt.hashSync(req.body.password, 10);
       const token = jwt.sign(payload, secretKey, options);
+      console.log(token);
       const newUser = new User({
         username: req.body.username,
         email: req.body.email,
