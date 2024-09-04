@@ -84,8 +84,7 @@ export default function LoginScreen({ navigation }) {
   async function sendData() {
     console.log("Envoi des données vers le backend");
     console.log("Utilisateur Final:", user);
-    const resp = await fetch(`gigster-app-backend-hf4wnrjjn-davids-projects-9ec7f219.vercel.app
-/users/signup`, {
+    const resp = await fetch("https://gigster-app-backend.vercel.app//users/signup", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(user),
@@ -99,12 +98,12 @@ export default function LoginScreen({ navigation }) {
       "/ token:",
       data.token,
       "/ ID:",
-      data.data._id,
+      // data.data._id,
       "/ error message:",
       data.error
     );
     if (data.result) {
-      delete data.data.artist._id;
+
       dispatch(updateUserAtLog(data.data))
       navigation.navigate("TabNavigator", { screen: "Home" });
     }
