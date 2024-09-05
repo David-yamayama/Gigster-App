@@ -74,6 +74,7 @@ export default function Step2(props) {
     });
 
     if (!result.canceled) {
+      props.updateUser({ profilePicture: result.assets[0].uri });
       console.log(result);
     } else {
       alert("Aucune image sélectionnée !");

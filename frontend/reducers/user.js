@@ -30,6 +30,7 @@ const initialState = {
     medias: [],
     token: null,
     likedHosts: [],
+    profilePicture: null,
   },
 };
 

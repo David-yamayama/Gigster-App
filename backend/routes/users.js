@@ -54,6 +54,7 @@ router.post("/signup", (req, res) => {
         addresses: [req.body.addresses],
         artist: req.body.artist,
         host: req.body.host,
+        profilePicture: req.body.profilePicture,
       });
 
       newUser.save().then((newDoc) => {
