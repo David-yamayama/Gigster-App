@@ -12,13 +12,8 @@ import {
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { LinearGradient } from "expo-linear-gradient";
-
-import profilePic from "../assets/Shulk.png";
-
 import { useDispatch, useSelector } from "react-redux";
-
-const EMAIL_REGEX =
-  /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+import InstagramWidget from "../components/InstagramWidget";
 
 export default function ProfileScreen() {
   const [image, setImage] = useState(null);
@@ -65,16 +60,28 @@ export default function ProfileScreen() {
     <View style={styles.container}>
       <View style={styles.profileContainer}>
         <View style={styles.profileCard}>
-          <ImageBackground source={profilePic} style={styles.profilePic}>
+          <ImageBackground
+            source={{ uri: user.profilePicture }}
+            style={styles.profilePic}
+          >
             <LinearGradient
               colors={["transparent", "rgba(255,255,255,1)"]}
               style={styles.background}
             />
             <View style={styles.profileDesc}>
               <View style={styles.infosContainer}>
-                <Text style={styles.username}>
-                  {user.isArtist ? user.artist.artistname : user.username}
-                </Text>
+                <View style={styles.leftInfos}>
+                  <Text style={styles.username}>
+                    {user.isArtist ? user.artist.artistname : user.username}
+                  </Text>
+                  <Text style={styles.placeOrigin}>
+                    {user.artist.placeOrigin}
+                  </Text>
+                </View>
+                <View style={styles.rightInfos}>
+                  <Text style={styles.likeCount}>256</Text>
+                  <FontAwesome name="heart" size={28} color={"#EB4335"} />
+                </View>
               </View>
             </View>
           </ImageBackground>
@@ -102,26 +109,22 @@ export default function ProfileScreen() {
           <View style={styles.infosCard}>
             <View style={styles.cardHead}>
               <Text style={styles.cardTitle}>Medias</Text>
-              <FontAwesome name="camera" size={25} />
             </View>
-            <View style={styles.mediaCard}>
-              {galleryData.length >= 9 ? galleryList : smallGalleryList}
-            </View>
+            <View style={styles.mediaCard}>{smallGalleryList}</View>
           </View>
           <View style={styles.infosCard}>
             <View style={styles.cardHead}>
               <Text style={styles.cardTitle}>Information</Text>
-              <FontAwesome name="info" size={25} />
             </View>
             <View style={styles.cardBottom}>
               <View style={styles.infoSection}>
                 <Text>Genres: </Text>
-                <Text style={{ fontWeight: "bold" }}>Electro - Rock - Rap</Text>
+                <Text style={{ fontWeight: "bold" }}>{user.artist.genres}</Text>
               </View>
               <View style={styles.infoSection}>
                 <Text>Instruments :</Text>
                 <Text style={{ fontWeight: "bold" }}>
-                  Piano - Batterie - Table de Mixage
+                  Synthétiseur - Drum Machine - Guitare
                 </Text>
               </View>
               <View style={styles.btnSection}>
@@ -150,7 +153,7 @@ export default function ProfileScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#F0E7F6",
+    backgroundColor: "#F3F4EB",
     height: "89%",
   },
   profileContainer: {
@@ -171,14 +174,12 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
 
-  profilePic:{
-width:"100%",
-height:"100%",
-resizeMode:"cover",
-borderRadius: 20,
-overflow:"hidden"
-
-
+  profilePic: {
+    width: "100%",
+    height: "100%",
+    resizeMode: "cover",
+    borderRadius: 13,
+    overflow: "hidden",
   },
   background: {
     position: "absolute",
@@ -195,11 +196,42 @@ overflow:"hidden"
   },
   username: {
     fontWeight: "bold",
-    fontSize: 25,
+    fontSize: 20,
+    color: "white",
+  },
+  placeOrigin: {
+    fontWeight: "bold",
+    fontSize: 13,
+    color: "white",
   },
   infosContainer: {
+    width: "100%",
+    height: "25%",
+    flexDirection: "row",
+    justifyContent: "space-between",
     alignItems: "center",
+    paddingHorizontal: 10,
+    position: "absolute",
+    bottom: 5,
   },
+  leftInfos: {
+    justifyContent: "flex-start",
+    alignSelf: "center",
+  },
+
+  rightInfos: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    alignSelf: "center",
+    gap: 5,
+  },
+  likeCount: {
+    fontWeight: "bold",
+    color: "white",
+    alignSelf: "center",
+    fontSize: 13,
+  },
+
   infosZone: {
     height: "57%",
     alignItems: "center",

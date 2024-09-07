@@ -36,7 +36,7 @@ export default function HomeScreen() {
   const user = useSelector((state) => state.user.value);
   const cardsLiked = useSelector((state) => state.user.value.likedHosts);
   console.log(cardsLiked);
-
+  
   const [modalContent, setModalContent] = useState({
     image: "",
     title: "",
@@ -97,6 +97,7 @@ export default function HomeScreen() {
           });
           setModalDisplay(2);
           setModalVisible(true);
+          
         }}
       >
         <AnnounceCard
@@ -234,7 +235,7 @@ export default function HomeScreen() {
             <View style={styles.profileContainer}>
               <Image
                 style={styles.profilePic}
-                source={require("../assets/Shulk.png")}
+                source={{uri: user.profilePicture}}
               />
               <Text style={styles.profileText}>{user.username}</Text>
             </View>
@@ -394,7 +395,7 @@ export default function HomeScreen() {
         >
           <Image
             style={styles.profilePicMenu}
-            source={require("../assets/Shulk.png")}
+            source={{uri: user.profilePicture}}
           />
         </TouchableOpacity>
         <View style={styles.searchField}>
@@ -406,6 +407,7 @@ export default function HomeScreen() {
             }
             placeholderTextColor="black"
             style={styles.input}
+            
           ></TextInput>
           <TouchableOpacity
             style={styles.btnSearch}
@@ -455,6 +457,7 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
+  
   container: {
     backgroundColor: "#F3F4EB",
     height: "100%",

@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import * as ImagePicker from "expo-image-picker";
+import { PickAndUploadImageAsync } from "./PickAndUploadImageAsync";
 
 export default function Step2(props) {
   // Validation schema for artist
@@ -68,15 +68,16 @@ export default function Step2(props) {
   };
 
   const pickImageAsync = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      allowsEditing: true,
-      quality: 1,
-    });
-
-    if (!result.canceled) {
-      props.updateUser({ profilePicture: result.assets[0].uri });
-      console.log(result);
-    } else {
+    try {
+      const imageUrl = await PickAndUploadImageAsync();
+      if (imageUrl) {
+        props.updateUser({ profilePicture: imageUrl });
+        console.log("Image uploaded successfully:", imageUrl);
+      } else {
+        throw new Error("No image selected or uploaded");
+      }
+    } catch (error) {
+      console.error("Error:", error);
       alert("Aucune image sélectionnée !");
     }
   };
@@ -175,7 +176,7 @@ export default function Step2(props) {
           </View>
 
           {/*Ajout de photos via la galerie du téléphone*/}
-          <Text style={styles.label}>Add profil picture ?</Text>
+          <Text style={styles.label}>Add profile picture ?</Text>
           <TouchableOpacity
             style={styles.btn}
             title="Choisir mon image"

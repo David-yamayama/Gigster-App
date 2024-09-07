@@ -43,6 +43,7 @@ export default function LoginScreen({ navigation }) {
     isHost: false,
     medias: [],
     token: null,
+    profilePicture: null,
   });
 
   function getNextPage(numPage) {
@@ -99,7 +100,7 @@ export default function LoginScreen({ navigation }) {
       "/ token:",
       data.token,
       "/ ID:",
-      data.data._id,
+      data._id,
       "/ error message:",
       data.error
     );
