@@ -89,7 +89,6 @@ router.post("/signin", (req, res) => {
 });
 
 router.post("/refresh", authMiddleware, (req, res) => {
-  // Grâce au middleware, req.auth contient déjà les infos décodées du token
   const username = req.auth.username;
 
   const payload = { username };
