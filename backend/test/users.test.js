@@ -5,7 +5,6 @@ describe("User Auth Tests", () => {
   let token;
 
   // Test user signup
-
   describe("POST /users/signup", () => {
     it("should successfully register a new user", async () => {
       const response = await request(app).post("/users/signup").send({
