@@ -21,7 +21,12 @@ import { eachDayOfInterval, format, isBefore } from "date-fns";
 import { useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 
-import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
+import {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+} from "firebase/storage";
 import firebase from "../firebaseconfig";
 
 export default function AnnounceScreen() {
@@ -39,8 +44,7 @@ export default function AnnounceScreen() {
   ]);
 
   //Variable d'états pour les images
-  const [image, setImage] = useState(null)
-
+  const [image, setImage] = useState(null);
 
   // Variable d'état des inputs
   const [street, setStreet] = useState("");
@@ -97,11 +101,11 @@ export default function AnnounceScreen() {
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [4, 3],
-      quality: 1
+      quality: 1,
     });
-    const source = { uri: result.assets[0].uri }
-    console.log(source)
-    setImage(source)
+    const source = { uri: result.assets[0].uri };
+    console.log(source);
+    setImage(source);
 
     if (!result.canceled) {
       console.log(result);
@@ -113,13 +117,15 @@ export default function AnnounceScreen() {
       // Initialise le stockage
       const storage = getStorage(firebase);
       // permet d'avoir un nom de fichier composé de chiffres et de lettres aléatoires
-      const imageName = `${Date.now()}-${Math.random().toString(36).substring(2, 9)}.jpg`
+      const imageName = `${Date.now()}-${Math.random()
+        .toString(36)
+        .substring(2, 9)}.jpg`;
       const storageRef = ref(storage, `images/${imageName}`);
 
       const uploadTask = uploadBytesResumable(storageRef, blob);
 
       uploadTask.on(
-        'state_changed',
+        "state_changed",
         (snapshot) => {
           console.log(`Image en cours d'upload`);
         },
@@ -596,7 +602,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: StatusBar.currentHeight,
-    backgroundColor: "#e1f5ff",
+    backgroundColor: "#F3F4EB",
     paddingTop: 20,
     paddingBottom: 20,
   },
