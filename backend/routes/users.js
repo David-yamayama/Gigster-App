@@ -8,6 +8,7 @@ const secretKey = process.env.SECRETKEY;
 const { User } = require("../models/users");
 
 router.post("/signup", (req, res) => {
+  console.log("Sign-up Request Body:", req.body);
   if (
     !checkBody(req.body, [
       "username",
@@ -37,9 +38,7 @@ router.post("/signup", (req, res) => {
       };
       console.log("BODY", req.body);
       const hash = bcrypt.hashSync(req.body.password, 10);
-      console.log("HASHED PASSWORD", hash);
       const token = jwt.sign(payload, secretKey, options);
-      console.log("TOKEN", token);
       const newUser = new User({
         username: req.body.username,
         email: req.body.email,
@@ -67,6 +66,7 @@ router.post("/signup", (req, res) => {
 });
 
 router.post("/signin", (req, res) => {
+  console.log("Sign-in Request Body:", req.body);
   if (!checkBody(req.body, ["email", "password"])) {
     res.json({ result: false, error: "Missing or empty fields" });
     return;
@@ -89,33 +89,36 @@ router.post("/signin", (req, res) => {
 });
 
 router.post("/refresh", authMiddleware, (req, res) => {
-  const token = req.body.token;
-  if (!token) {
-    res.json({ result: false, error: "Token is required" });
-    return;
-  }
+  // Grâce au middleware, req.auth contient déjà les infos décodées du token
+  const username = req.auth.username;
 
-  jwt.verify(token, secretKey, (err, decoded) => {
-    if (err) {
-      res.json({ result: false, error: "Invalid token" });
-      return;
-    }
+  const payload = { username };
+  const options = { expiresIn: "1s", algorithm: "HS256" };
+  const newToken = jwt.sign(payload, secretKey, options);
 
-    const payload = { username: decoded.username };
-    const options = { expiresIn: "30m", algorithm: "HS256" };
-    const newToken = jwt.sign(payload, secretKey, options);
-
-    User.findOne({ username: decoded.username }).then((user) => {
+  User.findOne({ username })
+    .then((user) => {
       if (user) {
         user.token = newToken;
-        user.save().then(() => {
-          res.json({ result: true, token: newToken });
-        });
+        user
+          .save()
+          .then(() => {
+            return res.status(200).json({ result: true, token: newToken });
+          })
+          .catch((error) => {
+            console.error(error);
+            return res
+              .status(500)
+              .json({ result: false, error: "Failed to save token" });
+          });
       } else {
-        res.json({ result: false, error: "User not found" });
+        return res.status(404).json({ result: false, error: "User not found" });
       }
+    })
+    .catch((error) => {
+      console.error(error);
+      return res.status(500).json({ result: false, error: "Database error" });
     });
-  });
 });
 
 module.exports = router;

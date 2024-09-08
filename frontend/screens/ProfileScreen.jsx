@@ -13,7 +13,6 @@ import {
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { LinearGradient } from "expo-linear-gradient";
 import { useDispatch, useSelector } from "react-redux";
-import InstagramWidget from "../components/InstagramWidget";
 
 export default function ProfileScreen() {
   const [image, setImage] = useState(null);
