@@ -1,15 +1,5 @@
-import React, { useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  Image,
-  TextInput,
-  ScrollView,
-  Platform,
-  Button,
-} from "react-native";
+import React from "react";
+import { StyleSheet, Text, View, Image } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 function AnnounceCard(props) {
@@ -41,16 +31,16 @@ const styles = StyleSheet.create({
     margin: 10,
     borderRadius: 20,
     borderRadius: 20,
-     // Pour Android
-     elevation: 5,
-     // Pour iOS
-     shadowColor: "#000",
-     shadowOffset: {
-       width: 3,
-       height: 4,
-     },
-     shadowOpacity: 1,
-     shadowRadius: 0,
+    // Pour Android
+    elevation: 5,
+    // Pour iOS
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 3,
+      height: 4,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 0,
   },
   recoImage: {
     width: "100%",
@@ -77,7 +67,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingLeft: 10,
     paddingRight: 15,
-    
   },
   descContainer: {
     height: "100%",

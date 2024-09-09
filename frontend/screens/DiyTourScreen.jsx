@@ -12,7 +12,6 @@ import MapView, { Marker, Callout } from "react-native-maps";
 import * as Location from "expo-location";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import moment from "moment";
-import { FRONT_IP } from "../hide-ip";
 
 export default function DiyTourScreen() {
   const [currentPosition, setCurrentPosition] = useState(null);
@@ -185,65 +184,6 @@ export default function DiyTourScreen() {
       </View>
     );
   }
-
-  //RECHERCHE ET AFFICHE LES HÔTES DISPONIBLE
-  // function displayAvailableHost() {
-
-  //   //Recherche toutes les annonces correspondantes à la date choisie:
-  //   fetch(`http://${FRONT_IP}:3000/allAnnounces`)
-  //     .then(response => response.json())
-  //     .then(data => {
-  //       console.log("ANNONCES", data.announces[0].availableDates[0].endDateAt)
-  //       const hostsAvailable = []
-  //       console.log('DATE', date)
-  //       for (let elem of data.announces) {
-
-  //         if (new Date(elem.availableDates[0].startDateAt) <= date && date <= new Date(elem.availableDates[0].endDateAt)) {
-
-  //           hostsAvailable.push(elem)
-  //         }
-  //       }
-
-  //       setHosts(hostsAvailable)
-  //       console.log('Host', hostsAvailable)
-  //       //Cherche les coordinnées de l'adresse de l'annonce:
-  //       const coords = []
-  //       for (let elem of hostsAvailable) {
-
-  //         const addresse = elem.address[0].street.split(" ").join("+")
-  //         console.log("ADD", addresse)
-
-  //         fetch(`https://api-adresse.data.gouv.fr/search/?q=${addresse}&zipcode=${elem.address[0].zipcode}&city=${elem.address[0].city}`)
-  //           .then(response => response.json())
-  //           .then(data => {
-  //             console.log("API")
-
-  //             const foundCoords = data.features[0];
-  //             console.log(elem.description)
-  //             coords.push({
-
-  //               name: elem.host.firstname,
-  //               description: elem.description,
-  //               coords: {
-  //                 latitude: foundCoords.geometry.coordinates[1],
-  //                 longitude: foundCoords.geometry.coordinates[0]
-  //               }
-  //             })
-  //           })
-  //       }
-  //       console.log('hello')
-  //       console.log('COORDS TROUVEE', coords)
-  //       setCoordinates([...coordinates, coords])
-
-  //     })
-
-  // }
-  // console.log('COORD', coordinates)
-  // const hostsPins = coordinates.map((elem, i) => {
-  //   return (
-  //     <Marker coordinate={elem.coords} title={elem.name} description={elem.description} pinColor="#5100FF" key={i} />
-  //   )
-  // })
 
   return (
     <View style={styles.container}>
@@ -438,3 +378,62 @@ const styles = StyleSheet.create({
     paddingRight: 5,
   },
 });
+
+//RECHERCHE ET AFFICHE LES HÔTES DISPONIBLE
+// function displayAvailableHost() {
+
+//   //Recherche toutes les annonces correspondantes à la date choisie:
+//   fetch(`http://${FRONT_IP}:3000/allAnnounces`)
+//     .then(response => response.json())
+//     .then(data => {
+//       console.log("ANNONCES", data.announces[0].availableDates[0].endDateAt)
+//       const hostsAvailable = []
+//       console.log('DATE', date)
+//       for (let elem of data.announces) {
+
+//         if (new Date(elem.availableDates[0].startDateAt) <= date && date <= new Date(elem.availableDates[0].endDateAt)) {
+
+//           hostsAvailable.push(elem)
+//         }
+//       }
+
+//       setHosts(hostsAvailable)
+//       console.log('Host', hostsAvailable)
+//       //Cherche les coordinnées de l'adresse de l'annonce:
+//       const coords = []
+//       for (let elem of hostsAvailable) {
+
+//         const addresse = elem.address[0].street.split(" ").join("+")
+//         console.log("ADD", addresse)
+
+//         fetch(`https://api-adresse.data.gouv.fr/search/?q=${addresse}&zipcode=${elem.address[0].zipcode}&city=${elem.address[0].city}`)
+//           .then(response => response.json())
+//           .then(data => {
+//             console.log("API")
+
+//             const foundCoords = data.features[0];
+//             console.log(elem.description)
+//             coords.push({
+
+//               name: elem.host.firstname,
+//               description: elem.description,
+//               coords: {
+//                 latitude: foundCoords.geometry.coordinates[1],
+//                 longitude: foundCoords.geometry.coordinates[0]
+//               }
+//             })
+//           })
+//       }
+//       console.log('hello')
+//       console.log('COORDS TROUVEE', coords)
+//       setCoordinates([...coordinates, coords])
+
+//     })
+
+// }
+// console.log('COORD', coordinates)
+// const hostsPins = coordinates.map((elem, i) => {
+//   return (
+//     <Marker coordinate={elem.coords} title={elem.name} description={elem.description} pinColor="#5100FF" key={i} />
+//   )
+// })

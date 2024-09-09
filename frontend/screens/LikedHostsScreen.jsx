@@ -5,17 +5,12 @@ import {
   View,
   TouchableOpacity,
   Image,
-  TextInput,
   ScrollView,
-  Platform,
-  Button,
-  ImageBackground,
 } from "react-native";
 import Modal from "react-native-modal";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 import AnnounceCardSearch from "../components/AnnounceCardSearch";
-import TopCard from "../components/TopCard";
 
 import { useNavigation } from "@react-navigation/native";
 import { useSelector, useDispatch } from "react-redux";

@@ -2,15 +2,10 @@ import Login from "../components/Login";
 import Step1 from "../components/Step1";
 import Step2 from "../components/Step2";
 import React, { useState } from "react";
-import { FRONT_IP } from "../hide-ip";
-import StatusScreen from "./StatusScreen";
-import {
 
-  updateUserAtLog,
-} from "../reducers/user";
+import StatusScreen from "./StatusScreen";
+import { updateUserAtLog } from "../reducers/user";
 import { useDispatch } from "react-redux";
-import { useNavigation } from "@react-navigation/native";
-import moment from "moment/moment";
 
 export default function LoginScreen({ navigation }) {
   const dispatch = useDispatch();
@@ -81,16 +76,18 @@ export default function LoginScreen({ navigation }) {
     sendData();
   }
 
-
   async function sendData() {
     console.log("Envoi des données vers le backend");
     console.log("Utilisateur Final:", user);
-   
-    const resp = await fetch("https://gigster-app-backend.vercel.app/users/signup", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(user),
-    });
+
+    const resp = await fetch(
+      "https://gigster-app-backend.vercel.app/users/signup",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(user),
+      }
+    );
 
     const data = await resp.json();
 
@@ -104,10 +101,9 @@ export default function LoginScreen({ navigation }) {
       "/ error message:",
       data.error
     );
-  
-    if (data.result) {
 
-      dispatch(updateUserAtLog(data.data))
+    if (data.result) {
+      dispatch(updateUserAtLog(data.data));
       navigation.navigate("TabNavigator", { screen: "Home" });
     }
   }

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import {
-  Image,
   StyleSheet,
   Text,
   TextInput,
@@ -11,10 +10,10 @@ import {
   ScrollView,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { updateUser, updateUserAtLog } from "../reducers/user";
+import { updateUserAtLog } from "../reducers/user";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { FRONT_IP } from "../hide-ip";
+
 import { useNavigation } from "@react-navigation/native";
 
 // Définir les schémas de validation avec Yup

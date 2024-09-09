@@ -1,9 +1,6 @@
-import { StatusBar } from "expo-status-bar";
-import { useState } from "react";
 import {
   StyleSheet,
   Text,
-  TextInput,
   View,
   Image,
   TouchableOpacity,
@@ -12,11 +9,9 @@ import {
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { LinearGradient } from "expo-linear-gradient";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 export default function ProfileScreen() {
-  const [image, setImage] = useState(null);
-
   const user = useSelector((state) => state.user.value);
 
   console.log(user.isArtist);
@@ -35,8 +30,6 @@ export default function ProfileScreen() {
 
   let smallGalleryData = [];
 
-  console.log(smallGalleryData);
-
   if (galleryData.length < 9) {
     smallGalleryData = [...galleryData];
 
@@ -44,8 +37,6 @@ export default function ProfileScreen() {
       smallGalleryData.push(`void ${i}`);
     }
   }
-
-  console.log(smallGalleryData);
 
   const galleryList = galleryData.map((data, i) => {
     return <Image key={i} source={data} style={styles.media} />;

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { StatusBar } from "expo-status-bar";
+import React, { useState } from "react";
+
 import {
   StyleSheet,
   Text,
@@ -8,19 +8,14 @@ import {
   Image,
   TextInput,
   ScrollView,
-  Platform,
-  Button,
-  ImageBackground,
 } from "react-native";
 import Modal from "react-native-modal";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import * as ImagePicker from "expo-image-picker";
 
 import AnnounceCard from "../components/AnnounceCard";
 import AnnounceCardSearch from "../components/AnnounceCardSearch";
 import TopCard from "../components/TopCard";
 
-import ProfileScreen from "./ProfileScreen";
 import { useNavigation } from "@react-navigation/native";
 import { useSelector, useDispatch } from "react-redux";
 import { addLikedHost, removeLikedHosts } from "../reducers/user";
@@ -28,7 +23,6 @@ import { addLikedHost, removeLikedHosts } from "../reducers/user";
 export default function HomeScreen() {
   const [modalVisible, setModalVisible] = useState(false);
   const [modalDisplay, setModalDisplay] = useState(0);
-  const [styleLike, setStyleLike] = useState({});
   const [searching, setSearching] = useState(false);
 
   const navigation = useNavigation();
@@ -36,7 +30,7 @@ export default function HomeScreen() {
   const user = useSelector((state) => state.user.value);
   const cardsLiked = useSelector((state) => state.user.value.likedHosts);
   console.log(cardsLiked);
-  
+
   const [modalContent, setModalContent] = useState({
     image: "",
     title: "",
@@ -97,7 +91,6 @@ export default function HomeScreen() {
           });
           setModalDisplay(2);
           setModalVisible(true);
-          
         }}
       >
         <AnnounceCard
@@ -235,7 +228,7 @@ export default function HomeScreen() {
             <View style={styles.profileContainer}>
               <Image
                 style={styles.profilePic}
-                source={{uri: user.profilePicture}}
+                source={{ uri: user.profilePicture }}
               />
               <Text style={styles.profileText}>{user.username}</Text>
             </View>
@@ -395,7 +388,7 @@ export default function HomeScreen() {
         >
           <Image
             style={styles.profilePicMenu}
-            source={{uri: user.profilePicture}}
+            source={{ uri: user.profilePicture }}
           />
         </TouchableOpacity>
         <View style={styles.searchField}>
@@ -407,7 +400,6 @@ export default function HomeScreen() {
             }
             placeholderTextColor="black"
             style={styles.input}
-            
           ></TextInput>
           <TouchableOpacity
             style={styles.btnSearch}
@@ -457,7 +449,6 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
-  
   container: {
     backgroundColor: "#F3F4EB",
     height: "100%",
@@ -514,9 +505,9 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.3,
     shadowRadius: 2,
-    display:"flex",
-    alignItems:"center",
-    justifyContent:"center",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   },
   textSearch: {
     color: "white",
