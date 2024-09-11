@@ -43,7 +43,13 @@ export default function ProfileScreen() {
   });
 
   const smallGalleryList = smallGalleryData.map((data, i) => {
-    return <Image key={i} source={data} style={styles.media} />;
+    return typeof data === "string" ? (
+      <Text key={i} style={styles.mediaText}>
+        {data}
+      </Text>
+    ) : (
+      <Image key={i} source={data} style={styles.media} />
+    );
   });
 
   return (
@@ -100,7 +106,9 @@ export default function ProfileScreen() {
             <View style={styles.cardHead}>
               <Text style={styles.cardTitle}>Medias</Text>
             </View>
-            <View style={styles.mediaCard}>{smallGalleryList}</View>
+            <View style={styles.mediaCard}>
+              {galleryData.length >= 9 ? galleryList : smallGalleryList}
+            </View>
           </View>
           <View style={styles.infosCard}>
             <View style={styles.cardHead}>

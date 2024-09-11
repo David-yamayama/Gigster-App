@@ -65,7 +65,6 @@ export default function Login(props, navigate) {
           delete data.data.artist._id;
           dispatch(updateUserAtLog(data.data));
           console.log(data);
-
           navigation.navigate("TabNavigator", { screen: "Home" });
         }
       });

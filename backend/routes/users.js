@@ -92,7 +92,7 @@ router.post("/refresh", authMiddleware, (req, res) => {
   const username = req.auth.username;
 
   const payload = { username };
-  const options = { expiresIn: "1s", algorithm: "HS256" };
+  const options = { expiresIn: "30m", algorithm: "HS256" };
   const newToken = jwt.sign(payload, secretKey, options);
 
   User.findOne({ username })

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {
+  Button,
+  Image,
   Platform,
   ScrollView,
   StyleSheet,
@@ -25,6 +27,7 @@ export default function DiyTourScreen() {
   const [allPins, setAllPins] = useState([]);
   const [isGo, setIsGo] = useState(false);
   const [datesPins, setDatesPins] = useState([]);
+  const [selectedHost, setSelectedHost] = useState([]);
 
   // Affichge du pin qui géoloc ma position
   useEffect(() => {
@@ -51,38 +54,58 @@ export default function DiyTourScreen() {
     })();
   }, []);
 
-  // Affichge de tout les Markers de la map à l'initialisation de la map
+  // Affichage de tout les Markers de la map à l'initialisation de la map
   useEffect(() => {
-    fetch(`https://gigster-app-backend.vercel.app
-/allAnnounces`)
-      .then((response) => response.json())
-      .then((data) => {
+    const fetchAnnounces = async () => {
+      try {
+        const response = await fetch(
+          `https://gigster-app-backend.vercel.app/allAnnounces`
+        );
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log("ANNONCES:", data);
+
+        const newPins = [];
         for (let elem of data.announces) {
           const addresse = elem.address[0].street.split(" ").join("+");
-          console.log("ADD", addresse);
-
-          fetch(
+          const locationResponse = await fetch(
             `https://api-adresse.data.gouv.fr/search/?q=${addresse}&zipcode=${elem.address[0].zipcode}&city=${elem.address[0].city}`
-          )
-            .then((response) => response.json())
-            .then((data) => {
-              console.log("API", data);
+          );
 
-              const foundCoords = data.features[0];
-              const coord = {
-                availableDates: elem.availableDates,
-                name: elem.host.firstname,
-                description: elem.description,
-                coords: {
-                  latitude: foundCoords.geometry.coordinates[1],
-                  longitude: foundCoords.geometry.coordinates[0],
-                },
-              };
+          if (!locationResponse.ok) {
+            throw new Error(
+              `Location API error! Status: ${locationResponse.status}`
+            );
+          }
 
-              setAllPins((previous) => [...previous, coord]);
-            });
+          const locationData = await locationResponse.json();
+          const foundCoords = locationData.features[0];
+
+          const coord = {
+            availableDates: elem.availableDates,
+            name: elem.host.firstname,
+            description: elem.description,
+            picture: elem.medias[0],
+            coords: {
+              latitude: foundCoords.geometry.coordinates[1],
+              longitude: foundCoords.geometry.coordinates[0],
+            },
+          };
+
+          newPins.push(coord);
         }
-      });
+
+        setAllPins(newPins);
+      } catch (error) {
+        console.error("Error fetching announcements or locations:", error);
+      }
+    };
+
+    fetchAnnounces();
   }, []);
 
   console.log("ALLPINS", allPins);
@@ -94,7 +117,23 @@ export default function DiyTourScreen() {
         description={elem.description}
         pinColor="#5100FF"
         key={i.toString()}
-      />
+      >
+        <Callout>
+          <View style={styles.calloutContainer}>
+            <Image source={{ uri: elem.picture }} style={styles.calloutImage} />
+            <Text style={styles.calloutTitle}>{elem.name}</Text>
+            <Text>{elem.description}</Text>
+            <TouchableOpacity
+              style={styles.btnSearch}
+              onPress={() => {
+                handleAddHost(elem);
+              }}
+            >
+              <Text style={styles.textSearch}>Add</Text>
+            </TouchableOpacity>
+          </View>
+        </Callout>
+      </Marker>
     );
   });
 
@@ -149,7 +188,26 @@ export default function DiyTourScreen() {
               description={elem.description}
               pinColor="#5100FF"
               key={i.toString()}
-            />
+            >
+              <Callout>
+                <View style={styles.calloutContainer}>
+                  <Image
+                    source={{ uri: elem.picture }}
+                    style={styles.calloutImage}
+                  />
+                  <Text style={styles.calloutTitle}>{elem.name}</Text>
+                  <Text>{elem.description}</Text>
+                  <TouchableOpacity
+                    style={styles.btnSearch}
+                    onPress={() => {
+                      handleAddHost(elem);
+                    }}
+                  >
+                    <Text style={styles.textSearch}>Add</Text>
+                  </TouchableOpacity>
+                </View>
+              </Callout>
+            </Marker>
           </>
         );
       }
@@ -159,7 +217,12 @@ export default function DiyTourScreen() {
     setIsGo(!isGo);
   };
 
-  const allDates = allPins.map((elem, i) => {
+  const handleAddHost = (host) => {
+    setSelectedHost((prevSelected) => [...prevSelected, host]);
+  };
+
+  //Affiche les hote selectionné sur la roadmap
+  const tourSelection = selectedHost.map((elem, i) => {
     if (
       new Date(elem.availableDates[0].startDateAt) <= date &&
       date <= new Date(elem.availableDates[0].endDateAt)
@@ -189,7 +252,11 @@ export default function DiyTourScreen() {
     <View style={styles.container}>
       <MapView style={StyleSheet.absoluteFillObject} region={mapRegion}>
         {currentPosition && (
-          <Marker coordinate={currentPosition} title="Me!" pinColor="#fecb2d" />
+          <Marker
+            coordinate={currentPosition}
+            title="Me !"
+            pinColor="#fecb2d"
+          />
         )}
         {!isGo ? hostsPins : datesPins}
       </MapView>
@@ -202,6 +269,7 @@ export default function DiyTourScreen() {
           onChangeText={setSearchCity}
           value={searchCity}
           onFocus={() => setIsOpen(true)}
+          onSubmitEditing={() => getCityLocation()}
         />
 
         {Platform.OS === "ios" ? (
@@ -244,7 +312,7 @@ export default function DiyTourScreen() {
       <View style={styles.bottomContainer}>
         <Text style={styles.title}>Mon Parcours </Text>
         <ScrollView style={styles.roadmap} showsVerticalScrollIndicator={false}>
-          {allDates}
+          {tourSelection}
         </ScrollView>
       </View>
     </View>
@@ -351,11 +419,15 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   calloutAddBtn: {
-    paddingTop: 20,
-    marginTop: 5,
-    marginBottom: 5,
-    marginLeft: 5,
-    marginRight: 5,
+    width: "100%",
+    marginTop: 15,
+    backgroundColor: "#5100FF",
+    paddingVertical: 6,
+    paddingHorizontal: 10,
+    borderRadius: 13,
+    borderWidth: 1,
+    borderBottomWidth: 3,
+    borderRightWidth: 3,
   },
   date: {
     marginTop: 15,
@@ -376,6 +448,21 @@ const styles = StyleSheet.create({
   },
   dateTxt: {
     paddingRight: 5,
+  },
+  calloutContainer: {
+    alignItems: "center",
+    width: 150,
+    padding: 0,
+  },
+  calloutImage: {
+    width: "100%",
+    height: 80,
+    borderRadius: 10,
+    marginBottom: 8,
+  },
+  calloutTitle: {
+    fontWeight: "bold",
+    marginBottom: 5,
   },
 });
 
